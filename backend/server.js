@@ -8,7 +8,9 @@ const port = 3000;
 
 
 app.use(bodyParser.json());
-app.use(cors()); 
+app.use(cors({
+  origin: 'https://dash-client-q1uv.vercel.app/' // Frontend URL from Vercel
+}));
 
 let goodCount = 0;
 let notGoodCount = 0;
