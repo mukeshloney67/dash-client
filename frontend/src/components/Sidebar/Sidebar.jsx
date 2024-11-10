@@ -13,7 +13,7 @@ const Sidebar = () => {
   useEffect(() => {
     const fetchMachineStatus = async () => {
       try {
-        const response = await fetch('https://dash-client-1.onrender.com/api/machine-status');
+        const response = await fetch('https://dash-client-2.onrender.com//api/machine-status');
         const data = await response.json();
         setIsRunning(data.isRunning);
       } catch (error) {
@@ -43,7 +43,7 @@ const Sidebar = () => {
   useEffect(() => {
     const fetchCounts = async () => {
       try {
-        const response = await fetch("https://dash-client-1.onrender.com/api/status");
+        const response = await fetch("https://dash-client-2.onrender.com//api/status");
         const data = await response.json();
         setGoodCount(data.goodCount);
         setNotGoodCount(data.notGoodCount);
