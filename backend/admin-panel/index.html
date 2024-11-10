@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Panel</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 20px;
+    }
+    .btn {
+      margin: 10px;
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+      border: none;
+      background-color: #4CAF50;
+      color: white;
+      border-radius: 5px;
+    }
+    .btn-danger {
+      background-color: #f44336;
+    }
+    .count-display {
+      margin-top: 20px;
+      font-size: 20px;
+    }
+    .main-button{
+        margin-top: 20px;
+    }
+
+    #machineToggleBtn{
+        padding: 10px 100px;
+        color: rgb(23, 21, 21);
+        border: none;
+    }
+  </style>
+</head>
+<body>
+  <h1>Admin Panel</h1>
+  <button  id="machineToggleBtn" onclick="toggleMachine()">ON</button>
+
+  <script>
+    async function toggleMachine() {
+      // Send the POST request to toggle machine state
+      await fetch('http://localhost:3000/api/admin/machine-toggle', { method: 'POST' });
+  
+      var button = document.getElementById('machineToggleBtn');
+      var currentColor = button.style.backgroundColor;
+  
+      // Check if the button is red (OFF)
+      if (currentColor === 'rgb(255, 0, 0)' || currentColor === 'green') {
+        // Change the button to green (ON) and update the text
+        button.style.backgroundColor = 'red';
+        button.innerHTML = 'OFF';
+      } else {
+        // Change the button to red (OFF) and update the text
+        button.style.backgroundColor = 'green';
+        button.innerHTML = 'ON';
+      }
+    }
+  </script>
+  
+  
+
+  
+  <div>
+    <button class="btn" onclick="clickGood()">Good</button>
+    <button class="btn" onclick="clickNotGood()">Not Good</button>
+    <button class="btn btn-danger" onclick="resetCounts()">Reset Counts</button>
+  </div>
+
+  <div class="count-display">
+    <p>Good Count: <span id="goodCount">0</span></p>
+    <p>Not Good Count: <span id="notGoodCount">0</span></p>
+  </div>
+
+  <script>
+    // Fetch and update the counts on the page
+    async function fetchCounts() {
+      const response = await fetch('http://localhost:3000/api/status');
+      const data = await response.json();
+      document.getElementById('goodCount').textContent = data.goodCount;
+      document.getElementById('notGoodCount').textContent = data.notGoodCount;
+    }
+
+    // Admin functions to trigger the button clicks and reset
+    async function clickGood() {
+      await fetch('http://localhost:3000/api/admin/click/good', { method: 'POST' });
+      fetchCounts(); // Update the counts
+    }
+
+    async function clickNotGood() {
+      await fetch('http://localhost:3000/api/admin/click/notGood', { method: 'POST' });
+      fetchCounts(); // Update the counts
+    }
+
+    async function resetCounts() {
+      await fetch('http://localhost:3000/api/admin/reset', { method: 'POST' });
+      fetchCounts(); // Update the counts
+    }
+
+    // Initial fetch of counts when the page loads
+    window.onload = fetchCounts;
+  </script>
+</body>
+</html>
